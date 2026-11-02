@@ -1,0 +1,38 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          trusted-proxies: ".*"
+          x-forwarded:
+            prefix-enabled: true
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: member-service
+              uri: lb://member-service
+              predicates:
+                - Path=/member-service/**
+              filters:
+                - StripPrefix=1
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
