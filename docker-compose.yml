@@ -13,18 +13,16 @@ services:
       - spharos
 
   eureka:
-    image: eureka
+    build: ./eureka
     container_name: eureka
-    pull_policy: if_not_present
     ports:
       - "8761:8761"
     networks:
       - spharos
 
   gateway:
-    image: gateway
+    build: ./gateway
     container_name: gateway
-    pull_policy: if_not_present
     ports:
       - "8000:8000"
     environment:
@@ -35,9 +33,8 @@ services:
       - spharos
 
   member-service:
-    image: member-service
+    build: ./spring
     container_name: member-service
-    pull_policy: if_not_present
     ports:
       - "8080:8080"
     environment:
